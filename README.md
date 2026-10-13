@@ -114,6 +114,24 @@ verification directory is removed unless `-KeepVerificationDirectory` is supplie
 Actual CLI ingestion/validation is a separate integration check performed by the
 CLI project before publication; structural validation here is not a substitute.
 
+### Continuous integration
+
+The [validation workflow](.github/workflows/validate-samples.yml) runs on pushes
+and pull requests using `windows-2025`, explicitly selecting Windows PowerShell
+5.1 (`powershell`, not `pwsh`) and checking for .NET Framework 4.8.1. After checkout,
+the test command is offline:
+
+```powershell
+.\scripts\Test-Samples.ps1 -VerificationDirectory .\.repro-check
+```
+
+It covers exact pinned regeneration, structural/full-period checks, mutations
+and mocked publication gates, then verifies cleanup and an unchanged checkout.
+The workflow has only `contents: read`, does not persist checkout credentials,
+clears GitHub token environment variables for tests, and has no publication
+steps or uploaded candidate assets. Runner patch versions can change; exact
+SHA256 pins still have to match and are never updated automatically.
+
 ## Maintainer publication: explicit approval required
 
 **Do not run this during candidate preparation.** Publication additionally needs
