@@ -3,7 +3,314 @@
     "tag":  "v2026.10.1",
     "status":  "local-candidate-not-published",
     "toolchain":  "Windows PowerShell 5.1.26100.9444 / .NET Framework 4.8.1 (4.8.09221); System.IO.Compression; NoCompression",
-    "provenance":  "Entirely synthetic; Simple adapted from NEMSweep 766316fbe1ce8bc965d2ed38e5500aa1f8c761e0 examples/custom-grid/Generate-SyntheticGrid.ps1. No observed source data.",
+    "provenance":  "Simple demand/weather is synthetic. Advanced preserves original AEMO ACTUAL_OPERATIONAL_DEMAND_HH ZIPs for Australian NEM FY2026 (1 July 2025-30 June 2026), and original TMYx 2011-2025 EPW files, byte-for-byte. EPW typical-year profiles are not measured FY2026 weather. Third-party demand/weather redistribution rights and attribution require separate confirmation before publication.",
+    "advancedInputs":  [
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20250706.zip",
+                               "length":  189361,
+                               "sha256":  "e71776d9d4dc334d64ed7a6d4afba0c0896e352b6e4274a44fec2d3de8c68924"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20250713.zip",
+                               "length":  189523,
+                               "sha256":  "26c8ca747cfadaf1c58e80f157c1e89191ea1719292049ec33db9ed9532f5068"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20250720.zip",
+                               "length":  189501,
+                               "sha256":  "9465a7b60d81efa7abce48c85320d9a6e98d8181fcd2e13fa28efcb356bc4d18"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20250727.zip",
+                               "length":  189507,
+                               "sha256":  "4f70c42061e15ca82a1057ddc04210b3e48ff1f8d12bbe54b740819096a99d14"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20250803.zip",
+                               "length":  189329,
+                               "sha256":  "fd9b6d2c2e475804a5eef4718edaa7dd538074c51277ab967e662300691ed429"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20250810.zip",
+                               "length":  189388,
+                               "sha256":  "7643542c8a1feed2bb89039821aacacbb22894359d0a9769074909cb995f6445"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20250817.zip",
+                               "length":  189399,
+                               "sha256":  "ce2629885edac4afe32aa22ecd123590725a35ee5d75019d8ba246d59bedc605"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20250824.zip",
+                               "length":  189318,
+                               "sha256":  "0368d7a8433f48762937987cd8d1c5ca9f259974a8082391de9014780c3e2052"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20250831.zip",
+                               "length":  189328,
+                               "sha256":  "609ec39078a2fd8aaed715042ce526cd86fd38e821248ad4fcf1134f2cc26801"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20250907.zip",
+                               "length":  189174,
+                               "sha256":  "200703ba558f628ab471244325a88d4a3b2be45ab64131bfea59c0e348a9387f"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20250914.zip",
+                               "length":  189263,
+                               "sha256":  "ccea0b5f157ade48b436ccf49598de289edcaae1135de532850b510e5d6bd147"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20250921.zip",
+                               "length":  189272,
+                               "sha256":  "5fcec3d09a0cbca329cd14d0a4df1ec2b059655c5f4d2b339e2271955123453f"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20250928.zip",
+                               "length":  189212,
+                               "sha256":  "51a0f3f8b6618ea6a8ed34025a23f8b7108b524217f6bf07590dcb68c36fe63e"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20251005.zip",
+                               "length":  189094,
+                               "sha256":  "d47aec0c715e5ba4065d40ebb4a049832fab5c8f8b94de6377860f34fb9d57da"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20251012.zip",
+                               "length":  189163,
+                               "sha256":  "0e89a2291968a90c41990c7a37646af2957ef2aa390ddada429da2012c2608cd"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20251019.zip",
+                               "length":  189123,
+                               "sha256":  "1e9f0ac69003400fce2f8e595e298b0d90930030cd1a983a674b35ab7d278fc6"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20251026.zip",
+                               "length":  189227,
+                               "sha256":  "d34e12d85a69f0a35a6c8fd74cfca53b021d337202f35b88a948eddf901870de"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20251102.zip",
+                               "length":  189212,
+                               "sha256":  "739bec98ae1db231cede1b97a496fc81c9f501d92702572442f8f79d6c13d5da"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20251109.zip",
+                               "length":  189059,
+                               "sha256":  "86d88930005dba1d0efb4ad7ae6fff848aa075a715cd16af0e1c4828cf76aa86"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20251116.zip",
+                               "length":  189202,
+                               "sha256":  "8aae0002e724a71c7470a3cf8bb87b603378f232acca927cb01d3a7f5124682a"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20251123.zip",
+                               "length":  189378,
+                               "sha256":  "7cff434cdfc7806e127cb0f0f2cb94cff957a3abd7545c4075004cbb22db4d49"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20251130.zip",
+                               "length":  189169,
+                               "sha256":  "d9d9196a5c136719cb3012306357e03f6ec9a7ac402ebc610537f69b49e38e61"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20251207.zip",
+                               "length":  189264,
+                               "sha256":  "4f06cce711c2637d5defdcb2485c7e9310922a51dc293c4230f5600c8b211598"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20251214.zip",
+                               "length":  189450,
+                               "sha256":  "7fc0720b2b6f5951dd422c5d5c06632794ae5b5f041db1efde3628b8e4b1b1b9"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20251221.zip",
+                               "length":  189324,
+                               "sha256":  "be6a07d530bdf3aa671675fbaccbbaefae74e967f3f24a6a4bcf6467a43d6f7d"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20251228.zip",
+                               "length":  189204,
+                               "sha256":  "11c3649fab8060fd3ebe9f54f1db4d0d7dc867b67170124206e93b14dda58b7f"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260104.zip",
+                               "length":  189391,
+                               "sha256":  "4d2c5eaa4b3ae3247b437a61e37b3d7eccf8d0f66793e4e43eb6d9eb57a854e9"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260111.zip",
+                               "length":  189240,
+                               "sha256":  "6f337e1dafc5b8905d10c3a7de437559ed92cd0e712f6c1f77bc5aede313d0cb"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260118.zip",
+                               "length":  189255,
+                               "sha256":  "96ecb2dc1f94102f1a70654c33daf26e99e062362e60980a6d85f5f46ae8277c"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260125.zip",
+                               "length":  189361,
+                               "sha256":  "c509f3521ec2327e8f929cc6dafed32797efd44f98868ef47712bb2e5425b19c"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260201.zip",
+                               "length":  189126,
+                               "sha256":  "815385fde9569a805e0e37699c040b746fee03a77c6726a7f48b354022cca430"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260208.zip",
+                               "length":  189230,
+                               "sha256":  "709de9b33e79b83e5980ffd0364534271960bdf4e0fca5082989d0f604a905b2"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260215.zip",
+                               "length":  189354,
+                               "sha256":  "17069698ce5a969005be9a34f769433ae0d11224141b345bf5f875a34af1a29f"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260222.zip",
+                               "length":  189405,
+                               "sha256":  "7608ba0161afa94138740fb0770e24a869eea9cd8409a6e67d1275d4b39593d2"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260301.zip",
+                               "length":  189277,
+                               "sha256":  "b1e147758555b6e37439f8bbaca1c404c4411d1f1a388bb49e80483c96a174c4"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260308.zip",
+                               "length":  189294,
+                               "sha256":  "21427b1e3172559794e4de2f1ae244183d9512c25e9a40905d404c17f2952534"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260315.zip",
+                               "length":  189369,
+                               "sha256":  "db7f6487f2e2180af70f2293f5a417d081d352b347055931abe1fcdde232eb91"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260322.zip",
+                               "length":  189328,
+                               "sha256":  "7aca9b18a9171c2219272086987858495176542ae086cc789237db7c07720149"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260329.zip",
+                               "length":  189197,
+                               "sha256":  "62f54d305877226379ef97ca141ed5ee5b945273ae4c0736e0990d13734f2f1d"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260405.zip",
+                               "length":  189305,
+                               "sha256":  "c3f622cf97e1e9e2b930c8d2b51d00b6083d3b6b10422fe65598beeab9fbb634"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260412.zip",
+                               "length":  189367,
+                               "sha256":  "8b15050163167331147788f5270d9f5af1feb76eba180d33ad645169d33c978f"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260419.zip",
+                               "length":  189433,
+                               "sha256":  "9a1a92aebe5d50a6a8b397ae6ecc229ef7a6258c4b54e7caa2c33001695229c4"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260426.zip",
+                               "length":  189410,
+                               "sha256":  "b61da34e55f911ac930d0d5b95d1ffd953e9fb4d9cb8d48e80f63ae5fc49076d"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260503.zip",
+                               "length":  189412,
+                               "sha256":  "e19d868fc4ea3cbffd7422431f4028c3762d5a094a988f1eb7b4c2847cb4add0"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260510.zip",
+                               "length":  189502,
+                               "sha256":  "ad8ad8d23a907cdc90930121e7a07f2c0a20b13ecac3e6ac571bce8077b30cd7"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260517.zip",
+                               "length":  189518,
+                               "sha256":  "7367e2b82642601999c881770cced0c22b02625acdc478548cbf36a78ae5d51e"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260524.zip",
+                               "length":  189472,
+                               "sha256":  "b652e7cfb21a3fff95052060058702657bc45fdf26c20f9116042caa196ca7af"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260531.zip",
+                               "length":  189663,
+                               "sha256":  "aef0417bafbb6a2d1ec46592abf309025d60fcdfecf5a5b15f13d20b665117d4"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260607.zip",
+                               "length":  189328,
+                               "sha256":  "3cf3c4746e521cf980213b9ad576abacaec2105bc782f8c281dda88503f5956e"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260614.zip",
+                               "length":  189408,
+                               "sha256":  "9ab42e563111d9fa80af38967dc90959844f841295396b9cb94874b25a15bd92"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260621.zip",
+                               "length":  189452,
+                               "sha256":  "c9d1987e2f6273ef2bfe5178781a0bc5053ced09082086e6ee2ae969e58bb280"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260628.zip",
+                               "length":  189478,
+                               "sha256":  "dc23137b2de03e933ca4329753988f61618528414ce9990724c098351f55cc05"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_20260705.zip",
+                               "length":  189354,
+                               "sha256":  "022aa678472935e9d2353c36c95c79104e6901939fc3eeafa0f317ee6d809e1b"
+                           },
+                           {
+                               "name":  "demand/operational-demand-hh/PUBLIC_ARCHIVE#DEMANDOPERATIONALACTUAL#FILE01#202507010000.zip",
+                               "length":  48757,
+                               "sha256":  "f20e3bb87906ef044003eeefe035530085724d1fa23583141f3a8fc3b38cec9e"
+                           },
+                           {
+                               "name":  "weather/NSW1/solar/AUS_NSW_Dubbo.City.Rgnl.AP.957190_TMYx.2011-2025.epw",
+                               "length":  1590238,
+                               "sha256":  "f9480a82d05a356279d302e011c678d758c2e2b5aa1b5a0ce21f6448cce029a8"
+                           },
+                           {
+                               "name":  "weather/NSW1/wind/AUS_NSW_Armidale.AP.957730_TMYx.2011-2025.epw",
+                               "length":  1585729,
+                               "sha256":  "dbeb31205fd27a6606b626445ac642eced0d5905ad15d9025eb98d11eed3d7e9"
+                           },
+                           {
+                               "name":  "weather/QLD1/solar/AUS_QLD_Gladstone.AP.943810_TMYx.2011-2025.epw",
+                               "length":  1603006,
+                               "sha256":  "1f5e8047b5fb49deda92f8448ea7c059695cbdbf50a57f66bfbe50dba008fc5d"
+                           },
+                           {
+                               "name":  "weather/QLD1/wind/AUS_QLD_Kingaroy.AP.945490_TMYx.2011-2025.epw",
+                               "length":  1589752,
+                               "sha256":  "cb6bf1867609cc859339c445f9490ce80947af1f79673d4c3fd35a8b37cb73be"
+                           },
+                           {
+                               "name":  "weather/SA1/AUS_SA_Port.Augusta.AP.956660_TMYx.2011-2025.epw",
+                               "length":  1596459,
+                               "sha256":  "9c4123240704e7c3e2c1e7109c8fc7a94fb394ea2186d5097f99b4ef9fa574fe"
+                           },
+                           {
+                               "name":  "weather/TAS1/AUS_TAS_Cape.Grim.Baseline.Air.Pollution.Stn.959540_TMYx.2011-2025.epw",
+                               "length":  1590818,
+                               "sha256":  "136bb7f0d5e4f66efd6834b07b2daf3f9acd3c8f9f8c58fc164878e5774dff24"
+                           },
+                           {
+                               "name":  "weather/VIC1/AUS_VIC_Ballarat.AP.948520_TMYx.2011-2025.epw",
+                               "length":  1584614,
+                               "sha256":  "b0d3065b502d2b5639a964ba0470cc961c647e4af150cf7f8962b95234c1d0eb"
+                           }
+                       ],
     "assets":  [
                    {
                        "name":  "simple-v2.zip",
@@ -12,8 +319,8 @@
                    },
                    {
                        "name":  "advanced-v2.zip",
-                       "length":  7582663,
-                       "sha256":  "7c2d0ac99563cd81e05ddfe432983bf04f4cb6cc7c06bca21515835ff453a3bb"
+                       "length":  21242283,
+                       "sha256":  "13d85377dd9c8466c19859536786b317658c61573f54cca7a77d7469ccf9473f"
                    }
                ]
 }

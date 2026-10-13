@@ -24,28 +24,23 @@ function Get-SampleDefinitions {
             })
         },
         [pscustomobject]@{
-            Asset = 'advanced-v2.zip'; Name = 'Synthetic five-region FY2026 demonstration'
+            Asset = 'advanced-v2.zip'; Name = 'Australian NEM FY2026 (1 July 2025-30 June 2026): AEMO operational demand and original TMYx 2011-2025 EPW weather'
             Start = '2025-07-01T00:00:00+10:00'; End = '2026-07-01T00:00:00+10:00'
             Regions = @(
-                [pscustomobject]@{ Id = 'NSW1'; Directory = 'nsw1'; BaseMw = 7500; Latitude = '-33.9'; Longitude = '151.2'; Temperature = 22; Wind = 5 },
-                [pscustomobject]@{ Id = 'QLD1'; Directory = 'qld1'; BaseMw = 6000; Latitude = '-27.5'; Longitude = '153.0'; Temperature = 26; Wind = 4 },
-                [pscustomobject]@{ Id = 'SA1'; Directory = 'sa1'; BaseMw = 1500; Latitude = '-34.9'; Longitude = '138.6'; Temperature = 23; Wind = 6 },
-                [pscustomobject]@{ Id = 'TAS1'; Directory = 'tas1'; BaseMw = 1000; Latitude = '-42.9'; Longitude = '147.3'; Temperature = 15; Wind = 7 },
-                [pscustomobject]@{ Id = 'VIC1'; Directory = 'vic1'; BaseMw = 4500; Latitude = '-37.8'; Longitude = '145.0'; Temperature = 20; Wind = 5 }
+                [pscustomobject]@{ Id = 'NSW1'; Directory = 'NSW1' },
+                [pscustomobject]@{ Id = 'QLD1'; Directory = 'QLD1' },
+                [pscustomobject]@{ Id = 'SA1'; Directory = 'SA1' },
+                [pscustomobject]@{ Id = 'TAS1'; Directory = 'TAS1' },
+                [pscustomobject]@{ Id = 'VIC1'; Directory = 'VIC1' }
             )
         }
     )
 }
 
 function Get-SampleDemandMw($Definition, $Region, [DateTimeOffset] $IntervalStart) {
-    if ($Definition.Asset -eq 'simple-v2.zip') {
-        if ($IntervalStart.Hour -ge 8 -and $IntervalStart.Hour -lt 20) { return 60 }
-        return 30
-    }
-    $dailyPercent = if ($IntervalStart.Hour -ge 8 -and $IntervalStart.Hour -lt 20) { 115 } else { 85 }
-    $seasonalPercent = if ($IntervalStart.Month -in @(12, 1, 2, 6, 7, 8)) { 110 } else { 95 }
-    $weeklyPercent = if ($IntervalStart.DayOfWeek -in @([DayOfWeek]::Saturday, [DayOfWeek]::Sunday)) { 92 } else { 100 }
-    return [int][Math]::Round($Region.BaseMw * $dailyPercent * $seasonalPercent * $weeklyPercent / 1000000.0, 0, [MidpointRounding]::AwayFromZero)
+    if ($Definition.Asset -ne 'simple-v2.zip') { throw 'Only Simple demand may be generated; Advanced must preserve original inputs.' }
+    if ($IntervalStart.Hour -ge 8 -and $IntervalStart.Hour -lt 20) { return 60 }
+    return 30
 }
 
 function New-SampleDemandBytes($Definition) {
@@ -105,7 +100,56 @@ function New-SampleZipBytes([Collections.IDictionary] $Entries) {
     finally { $memory.Dispose() }
 }
 
-function New-SampleArchiveBytes($Definition) {
+function Get-ReviewedAdvancedInputNames {
+    for ($date = [DateTime]::new(2025, 7, 6); $date -le [DateTime]::new(2026, 7, 5); $date = $date.AddDays(7)) {
+        'demand/operational-demand-hh/PUBLIC_ACTUAL_OPERATIONAL_DEMAND_HH_' + $date.ToString('yyyyMMdd', $script:Invariant) + '.zip'
+    }
+    'demand/operational-demand-hh/PUBLIC_ARCHIVE#DEMANDOPERATIONALACTUAL#FILE01#202507010000.zip'
+    'weather/NSW1/solar/AUS_NSW_Dubbo.City.Rgnl.AP.957190_TMYx.2011-2025.epw'
+    'weather/NSW1/wind/AUS_NSW_Armidale.AP.957730_TMYx.2011-2025.epw'
+    'weather/QLD1/solar/AUS_QLD_Gladstone.AP.943810_TMYx.2011-2025.epw'
+    'weather/QLD1/wind/AUS_QLD_Kingaroy.AP.945490_TMYx.2011-2025.epw'
+    'weather/SA1/AUS_SA_Port.Augusta.AP.956660_TMYx.2011-2025.epw'
+    'weather/TAS1/AUS_TAS_Cape.Grim.Baseline.Air.Pollution.Stn.959540_TMYx.2011-2025.epw'
+    'weather/VIC1/AUS_VIC_Ballarat.AP.948520_TMYx.2011-2025.epw'
+}
+
+function Assert-ReviewedAdvancedInputNames([string[]] $Names) {
+    [string[]]$expected = @(Get-ReviewedAdvancedInputNames)
+    [Array]::Sort($expected, [StringComparer]::Ordinal)
+    [Array]::Sort($Names, [StringComparer]::Ordinal)
+    if ([string]::Join("`n", $Names) -cne [string]::Join("`n", $expected)) {
+        throw "Advanced file set differs from the reviewed demand/weather paths (expected $($expected.Count) inputs)."
+    }
+}
+
+function Get-AdvancedInputEntries([string] $SourceBundleDirectory) {
+    if (!$SourceBundleDirectory) { throw 'Advanced requires the original FY2026 source bundle; generated data is not a substitute.' }
+    $root = [IO.Path]::GetFullPath($SourceBundleDirectory).TrimEnd([IO.Path]::DirectorySeparatorChar)
+    $manifest = Get-Content -LiteralPath (Join-Path $root 'manifest.json') -Raw | ConvertFrom-Json
+    $definition = @(Get-SampleDefinitions)[1]
+    if ($manifest.schemaVersion -ne 2 -or $manifest.period.start -cne $definition.Start -or $manifest.period.end -cne $definition.End -or $manifest.regions.Count -ne 5) {
+        throw 'The source must be a format-2 Australian NEM FY2026 bundle with the expected UTC+10 period.'
+    }
+    foreach ($region in $definition.Regions) {
+        $mapping = @($manifest.regions | Where-Object { $_.regionId -ceq $region.Id -and $_.weatherDirectory -ceq $region.Directory })
+        if ($mapping.Count -ne 1) { throw 'The source region/weather mappings differ from the Australian NEM bundle.' }
+    }
+    $entries = [ordered]@{}
+    $files = @(Get-ChildItem -LiteralPath (Join-Path $root 'demand\operational-demand-hh') -File -Recurse -Filter '*.zip')
+    $files += @(Get-ChildItem -LiteralPath (Join-Path $root 'weather') -File -Recurse -Filter '*.epw')
+    foreach ($file in ($files | Sort-Object FullName)) {
+        $name = $file.FullName.Substring($root.Length + 1).Replace('\', '/')
+        if ($name -notmatch '^(demand/operational-demand-hh/[A-Za-z0-9_.#-]+\.zip|weather/(?:[A-Za-z0-9_-]+/)+[A-Za-z0-9_.-]+\.epw)$' -or $entries.Contains($name)) {
+            throw "Unexpected or colliding original input path: $name"
+        }
+        $entries[$name] = [IO.File]::ReadAllBytes($file.FullName)
+    }
+    Assert-ReviewedAdvancedInputNames @($entries.Keys)
+    return ,$entries
+}
+
+function New-SampleArchiveBytes($Definition, [Collections.IDictionary] $AdvancedInputs) {
     $manifest = [ordered]@{
         '$schema' = 'https://raw.githubusercontent.com/HasinthaAttanayake/NEMSweep/main/schema/manifest-v2.json'
         schemaVersion = 2
@@ -119,12 +163,15 @@ function New-SampleArchiveBytes($Definition) {
     $json = ($manifest | ConvertTo-Json -Depth 10).Replace("`r`n", "`n") + "`n"
     $entries = [ordered]@{}
     $entries['manifest.json'] = $script:Utf8.GetBytes($json)
-    $entries['demand/operational-demand-hh/synthetic-demand.zip'] = New-SampleZipBytes @{
-        'operational-demand.csv' = (New-SampleDemandBytes $Definition)
-    }
-    for ($index = 0; $index -lt $Definition.Regions.Count; $index++) {
-        $region = $Definition.Regions[$index]
-        $entries["weather/$($region.Directory)/synthetic-typical-year.epw"] = New-SampleWeatherBytes $Definition $region $index
+    if ($Definition.Asset -eq 'advanced-v2.zip') {
+        if (!$AdvancedInputs -or $AdvancedInputs.Count -eq 0) { throw 'Advanced requires original input bytes; generated data is not a substitute.' }
+        foreach ($name in $AdvancedInputs.Keys) { $entries[$name] = $AdvancedInputs[$name] }
+    } else {
+        $entries['demand/operational-demand-hh/synthetic-demand.zip'] = New-SampleZipBytes @{
+            'operational-demand.csv' = (New-SampleDemandBytes $Definition)
+        }
+        $region = $Definition.Regions[0]
+        $entries["weather/$($region.Directory)/synthetic-typical-year.epw"] = New-SampleWeatherBytes $Definition $region 0
     }
     return ,(New-SampleZipBytes $entries)
 }
@@ -133,6 +180,34 @@ function Get-SampleSha256([byte[]] $Bytes) {
     $sha = [Security.Cryptography.SHA256]::Create()
     try { return [BitConverter]::ToString($sha.ComputeHash($Bytes)).Replace('-', '').ToLowerInvariant() }
     finally { $sha.Dispose() }
+}
+
+function Assert-AdvancedInputsWithCli([byte[]] $Bytes, [string] $CliAssemblyPath) {
+    $root = Join-Path ([IO.Path]::GetTempPath()) ("nemsweep-original-inputs-" + [Guid]::NewGuid().ToString('N'))
+    $bundle = Join-Path $root 'bundle'
+    [IO.Directory]::CreateDirectory($bundle) | Out-Null
+    $memory = [IO.MemoryStream]::new($Bytes, $false)
+    $archive = [IO.Compression.ZipArchive]::new($memory, [IO.Compression.ZipArchiveMode]::Read)
+    try {
+        foreach ($entry in $archive.Entries) {
+            if ($entry.FullName -notmatch '^(manifest\.json|demand/operational-demand-hh/[A-Za-z0-9_.#-]+\.zip|weather/(?:[A-Za-z0-9_-]+/)+[A-Za-z0-9_.-]+\.epw)$') {
+                throw "Unexpected original-input validation entry: $($entry.FullName)"
+            }
+            $path = Join-Path $bundle $entry.FullName.Replace('/', '\')
+            [IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($path)) | Out-Null
+            $input = $entry.Open()
+            $output = [IO.File]::Create($path)
+            try { $input.CopyTo($output) }
+            finally { $output.Dispose(); $input.Dispose() }
+        }
+        & dotnet $CliAssemblyPath --validate-inputs $bundle
+        if ($LASTEXITCODE -ne 0) { throw 'Original Advanced inputs failed complete bundle validation in the compatible CLI.' }
+    }
+    finally {
+        $archive.Dispose()
+        $memory.Dispose()
+        Remove-Item -LiteralPath $root -Recurse -Force
+    }
 }
 
 function Assert-SamplePin($Pin, [byte[]] $Bytes) {
