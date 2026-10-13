@@ -1,0 +1,19 @@
+{
+    "repository":  "HasinthaAttanayake/NEMSweep.Samples",
+    "tag":  "v2026.10.1",
+    "status":  "local-candidate-not-published",
+    "toolchain":  "Windows PowerShell 5.1.26100.9444 / .NET Framework 4.8.1 (4.8.09221); System.IO.Compression; NoCompression",
+    "provenance":  "Entirely synthetic; Simple adapted from NEMSweep 766316fbe1ce8bc965d2ed38e5500aa1f8c761e0 examples/custom-grid/Generate-SyntheticGrid.ps1. No observed source data.",
+    "assets":  [
+                   {
+                       "name":  "simple-v2.zip",
+                       "length":  1557670,
+                       "sha256":  "39b9ba1996ef720fdffba6e89cc46082ed82e4b277f036e5e296d5880970d3e9"
+                   },
+                   {
+                       "name":  "advanced-v2.zip",
+                       "length":  7582663,
+                       "sha256":  "7c2d0ac99563cd81e05ddfe432983bf04f4cb6cc7c06bca21515835ff453a3bb"
+                   }
+               ]
+}
