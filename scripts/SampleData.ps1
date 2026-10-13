@@ -1,3 +1,6 @@
+# Maintainer-only producer: verified on Windows PowerShell 5.1 / .NET Framework 4.8.1.
+# PowerShell 7 on Linux/macOS is not a verified regeneration toolchain.
+# Downloading the ZIPs or using CLI quick-start does not run these scripts.
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.IO.Compression

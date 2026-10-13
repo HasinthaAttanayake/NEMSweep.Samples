@@ -1,8 +1,48 @@
 # NEMSweep.Samples
 
-**Local release candidates only. Nothing has been published.** Review and merge the
-samples pull request before authorizing publication. These data-only starter inputs
+**No downloadable data release has been published yet.** This public repository
+contains the maintainer recipes and candidate checksums, not the sample ZIPs.
+Review and merge the samples pull request before authorizing publication.
+These data-only starter inputs
 are separate from the [NEMSweep CLI](https://github.com/HasinthaAttanayake/NEMSweep).
+
+## For sample users: no PowerShell required
+
+You do **not** need to clone this repository or run its `.ps1` scripts to use the
+samples. Once published, the normal paths are to download a ready-made ZIP or
+use the compatible CLI's `--quick-start simple` / `--quick-start advanced`.
+
+| Activity | Requirements | Platform considerations |
+| --- | --- | --- |
+| Download and extract a starter ZIP | Browser or HTTP downloader and a ZIP extractor | No PowerShell or .NET required; usable on Windows, Linux and macOS. |
+| Prepare a study with CLI quick-start | Compatible NEMSweep CLI and .NET 10 runtime; SDK for a source build | Download, verification, extraction and ingestion run in .NET, not PowerShell. |
+| Run a scenario or sweep | Compatible NEMSweep CLI, .NET runtime and prepared inputs | No PowerShell required; use your normal shell. |
+| Regenerate, validate or publish with this repository's scripts | Windows PowerShell 5.1 and .NET Framework 4.8.1; publication also needs git/gh | Maintainer tooling, verified on Windows only. PowerShell 7 on Linux/macOS is not a verified replacement. |
+
+The CLI is separate from these data-production scripts. A Windows user without
+PowerShell can still download the ZIPs and use the CLI. PowerShell 7 is available
+on other operating systems, but these recipes and their exact pinned archive
+bytes have **not** been validated there.
+
+The quick-start feature currently requires the reviewed CLI source build; it is
+not in the older `0.1.0` NuGet package. See the
+[CLI starter guide](https://github.com/HasinthaAttanayake/NEMSweep/blob/feat/github-quickstart/docs/guide/synthetic-starters.md)
+for preparation and run instructions.
+
+## Where are the ZIPs?
+
+The intended public home is **[GitHub Releases](https://github.com/HasinthaAttanayake/NEMSweep.Samples/releases)**,
+under the data release's **Assets** section, not the repository's file listing.
+The assets will be named `simple-v2.zip` and `advanced-v2.zip`. GitHub's automatic
+**Source code (zip)** download contains the recipes, not the generated datasets.
+
+Until the reviewed release is published, the candidates are local only. Running
+the maintainer generation command below writes them to the selected output
+directory, for example `generated/simple-v2.zip` and `generated/advanced-v2.zip`.
+Neither this Git checkout nor the validation workflow provides hosted ZIP
+downloads: generated assets are gitignored and CI does not upload them.
+The planned URLs below return 404 until publication; cloning the repository does
+not fetch the datasets.
 
 ## Proposed data release
 
@@ -76,13 +116,23 @@ properties. The [BSD-3-Clause license](LICENSE.md) covers this recipe and its
 synthetic data, preserving upstream attribution. It does **not** cover AEMO or
 third-party datasets, which are not redistributed here.
 
-## Generate and validate locally
+## Maintainers: generate and validate locally
 
-No CLI checkout, .NET SDK, Python, external data, download or package installation
-is needed. The pinned recipe was verified with **Windows PowerShell 5.1 and .NET
+**Supported maintainer platform: Windows only**, using Windows PowerShell 5.1
+and .NET Framework 4.8.1. Linux/macOS and PowerShell 7 regeneration are not
+currently supported or tested. This limitation applies to producing, validating
+and publishing assets with these scripts, not to consuming the sample data.
+
+These `.ps1` scripts build and verify release assets; they are **not user setup
+scripts**. They require Windows PowerShell 5.1 and .NET Framework 4.8.1.
+With that producer toolchain installed, no CLI checkout, .NET SDK, Python,
+external data or package installation is needed.
+The pinned recipe was verified with **Windows PowerShell 5.1 and .NET
 Framework 4.8.1 (installed version 4.8.09221)**. Different PowerShell/.NET versions
 may serialize ZIP/JSON bytes differently; the scripts fail rather than silently
-accept different hashes. Run from this repository in Windows PowerShell:
+accept different hashes. Cross-platform regeneration is not currently verified;
+installing PowerShell 7 alone does not establish compatibility. Run from this
+repository in Windows PowerShell:
 
 ```powershell
 .\scripts\Generate-Samples.ps1 -OutputDirectory .\generated
