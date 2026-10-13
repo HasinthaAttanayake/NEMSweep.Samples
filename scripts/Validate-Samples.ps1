@@ -1,5 +1,8 @@
 [CmdletBinding()]
-param([Parameter(Mandatory = $true)][string] $CandidateDirectory)
+param(
+    [Parameter(Mandatory = $true)][string] $CandidateDirectory,
+    [Parameter(Mandatory = $true)][string] $CliAssemblyPath
+)
 
 . (Join-Path $PSScriptRoot 'SampleData.ps1')
 
@@ -35,8 +38,14 @@ function Assert-SampleArchive([byte[]] $Bytes, $Definition) {
     $memory = [IO.MemoryStream]::new($Bytes, $false)
     $archive = [IO.Compression.ZipArchive]::new($memory, [IO.Compression.ZipArchiveMode]::Read)
     try {
-        $names = @('manifest.json', 'demand/operational-demand-hh/synthetic-demand.zip')
-        $names += @($Definition.Regions | ForEach-Object { "weather/$($_.Directory)/synthetic-typical-year.epw" })
+        $advanced = $Definition.Asset -eq 'advanced-v2.zip'
+        $names = @('manifest.json')
+        if ($advanced) {
+            $names += @($metadata.advancedInputs | ForEach-Object { $_.name })
+        } else {
+            $names += 'demand/operational-demand-hh/synthetic-demand.zip'
+            $names += @($Definition.Regions | ForEach-Object { "weather/$($_.Directory)/synthetic-typical-year.epw" })
+        }
         Assert-ZipEntries $archive $names
         $manifest = (Read-SampleText (Read-EntryBytes ($archive.GetEntry('manifest.json')))) | ConvertFrom-Json
         Assert-Condition ($manifest.PSObject.Properties.Name.Count -eq 6) 'Unexpected manifest properties.'
@@ -50,6 +59,15 @@ function Assert-SampleArchive([byte[]] $Bytes, $Definition) {
                 $manifest.regions[$i].weatherDirectory -ceq $Definition.Regions[$i].Directory) 'Incorrect region/weather mapping.'
         }
 
+        if ($advanced) {
+            foreach ($source in $metadata.advancedInputs) {
+                [byte[]]$sourceBytes = Read-EntryBytes ($archive.GetEntry($source.name))
+                Assert-Condition ($sourceBytes.LongLength -eq $source.length -and (Get-SampleSha256 $sourceBytes) -ceq $source.sha256) 'Original demand/EPW bytes differ from the reviewed source inventory.'
+            }
+            Assert-AdvancedInputsWithCli $Bytes $CliAssemblyPath
+            Write-Host "Validated $($Definition.Asset): original demand/EPW source bytes and complete FY2026 input coverage."
+            return
+        }
         $demandMemory = [IO.MemoryStream]::new((Read-EntryBytes ($archive.GetEntry('demand/operational-demand-hh/synthetic-demand.zip'))), $false)
         $demandZip = [IO.Compression.ZipArchive]::new($demandMemory, [IO.Compression.ZipArchiveMode]::Read)
         try {
@@ -108,6 +126,7 @@ function Assert-SampleArchive([byte[]] $Bytes, $Definition) {
 $repoRoot = Split-Path $PSScriptRoot -Parent
 $metadata = Get-Content -LiteralPath (Join-Path $repoRoot 'release-candidate.json') -Raw | ConvertFrom-Json
 Assert-Condition ($metadata.repository -ceq 'HasinthaAttanayake/NEMSweep.Samples' -and $metadata.tag -ceq 'v2026.10.1' -and $metadata.assets.Count -eq 2) 'Incorrect candidate repository, tag or asset count.'
+Assert-ReviewedAdvancedInputNames @($metadata.advancedInputs | ForEach-Object { $_.name })
 $expectedChecksums = (($metadata.assets | ForEach-Object { "$($_.sha256)  $($_.name)" }) -join "`n") + "`n"
 Assert-Condition ([IO.File]::ReadAllText((Join-Path $repoRoot 'checksums.txt'), $script:Utf8) -ceq $expectedChecksums) 'checksums.txt differs from release-candidate.json.'
 foreach ($definition in (Get-SampleDefinitions)) {
